@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tetris Clásico Arcade</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-wrapper">
+    <header class="game-header">
+      <h1 class="logo">TETRIS <span>ARCADE</span></h1>
+      <div class="header-actions">
+        <button id="sound-btn" class="icon-btn" title="Activar/Desactivar sonido" aria-label="Sonido">🔊</button>
+        <button id="pause-btn" class="icon-btn" title="Pausar juego (Tecla P)" aria-label="Pausa">⏸</button>
+      </div>
+    </header>
+
+    <main class="game-container">
+      <!-- Panel Lateral Izquierdo -->
+      <aside class="side-panel left-panel">
+        <div class="panel-box hold-box">
+          <h2>GUARDAR (C)</h2>
+          <canvas id="hold-canvas" width="100" height="100"></canvas>
+        </div>
+
+        <div class="panel-box stats-box">
+          <div class="stat-group">
+            <span class="stat-label">NIVEL</span>
+            <span id="level-display" class="stat-value">1</span>
+          </div>
+          <div class="stat-group">
+            <span class="stat-label">LÍNEAS</span>
+            <span id="lines-display" class="stat-value">0</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Tablero Principal -->
+      <section class="board-area">
+        <div class="canvas-container">
+          <canvas id="board-canvas" width="300" height="600"></canvas>
+          
+          <!-- Overlays -->
+          <div id="game-overlay" class="overlay hidden">
+            <div class="overlay-content">
+              <h2 id="overlay-title">GAME OVER</h2>
+              <p id="overlay-score-msg">Puntaje final: <span id="final-score">0</span></p>
+              <button id="start-btn" class="action-btn">JUGAR DE NUEVO</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel Lateral Derecho -->
+      <aside class="side-panel right-panel">
+        <div class="panel-box score-box">
+          <div class="stat-group">
+            <span class="stat-label">PUNTAJE</span>
+            <span id="score-display" class="stat-value highlight">0</span>
+          </div>
+          <div class="stat-group">
+            <span class="stat-label">RÉCORD</span>
+            <span id="high-score-display" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="panel-box next-box">
+          <h2>SIGUIENTE</h2>
+          <canvas id="next-canvas" width="100" height="100"></canvas>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Controles táctiles en pantalla (ideal para móviles o juego con ratón) -->
+    <section class="touch-controls">
+      <div class="touch-row top-touch-row">
+        <button id="touch-hold" class="touch-btn sec-btn" aria-label="Guardar pieza">HOLD</button>
+        <button id="touch-rotate" class="touch-btn action-touch" aria-label="Rotar pieza">↻ ROTAR</button>
+        <button id="touch-hard-drop" class="touch-btn hard-drop-btn" aria-label="Caída rápida">CAER ⤓</button>
+      </div>
+      <div class="touch-row dir-touch-row">
+        <button id="touch-left" class="touch-btn dir-btn" aria-label="Mover izquierda">◀</button>
+        <button id="touch-down" class="touch-btn dir-btn" aria-label="Bajar más rápido">▼</button>
+        <button id="touch-right" class="touch-btn dir-btn" aria-label="Mover derecha">▶</button>
+      </div>
+    </section>
+
+    <!-- Ayuda de teclado -->
+    <footer class="game-footer">
+      <div class="keyboard-hints">
+        <span><kbd>◀</kbd><kbd>▶</kbd> Mover</span>
+        <span><kbd>▲</kbd> Rotar</span>
+        <span><kbd>▼</kbd> Bajar</span>
+        <span><kbd>Espacio</kbd> Caída directa</span>
+        <span><kbd>C</kbd> Guardar</span>
+        <span><kbd>P</kbd> Pausa</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
