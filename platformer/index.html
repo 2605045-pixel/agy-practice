@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Super Retro Platformer - Mario Style</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-wrapper">
+    <!-- Barra superior de navegación / HUD -->
+    <header class="game-hud">
+      <div class="hud-item">
+        <span class="hud-label">MARIO</span>
+        <span id="hud-score" class="hud-value">000000</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">COINS</span>
+        <span id="hud-coins" class="hud-value">🪙 x00</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">WORLD</span>
+        <span class="hud-value">1-1</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">TIME</span>
+        <span id="hud-time" class="hud-value">400</span>
+      </div>
+      <div class="hud-actions">
+        <button id="bgm-btn" class="hud-btn" title="Música / Sonido">🎵</button>
+        <a href="../index.html" class="hud-btn" title="Volver a Tetris">🕹️</a>
+      </div>
+    </header>
+
+    <!-- Área del Canvas del Juego -->
+    <main class="canvas-container">
+      <canvas id="gameCanvas" width="800" height="480"></canvas>
+
+      <!-- Pantalla de Inicio / Game Over / Victoria -->
+      <div id="screen-overlay" class="overlay">
+        <div class="overlay-box">
+          <h1 id="overlay-title" class="pixel-title">SUPER PLATFORMER</h1>
+          <p id="overlay-subtitle" class="pixel-subtitle">Aventuras al estilo 8-bit</p>
+          <div id="overlay-stats" class="overlay-stats hidden">
+            <p>Puntaje: <span id="final-score">0</span></p>
+            <p>Monedas: <span id="final-coins">0</span></p>
+          </div>
+          <button id="start-btn" class="pixel-btn">PRESIONA PARA JUGAR</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Controles táctiles virtuales para móviles -->
+    <section class="touch-bar">
+      <div class="touch-cluster dpad">
+        <button id="touch-left" class="t-btn dpad-btn" aria-label="Izquierda">◀</button>
+        <button id="touch-right" class="t-btn dpad-btn" aria-label="Derecha">▶</button>
+      </div>
+      <div class="touch-cluster actions">
+        <button id="touch-sprint" class="t-btn action-b" aria-label="Correr">B</button>
+        <button id="touch-jump" class="t-btn action-a" aria-label="Saltar">A</button>
+      </div>
+    </section>
+
+    <!-- Guía de teclado -->
+    <footer class="game-controls-help">
+      <span><kbd>◀</kbd><kbd>▶</kbd> o <kbd>A</kbd><kbd>D</kbd> Moverse</span>
+      <span><kbd>▲</kbd> / <kbd>Espacio</kbd> / <kbd>W</kbd> Saltar</span>
+      <span><kbd>Shift</kbd> Correr / Sprint</span>
+      <span><kbd>R</kbd> Reiniciar</span>
+      <span><kbd>M</kbd> Silenciar / Música</span>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
