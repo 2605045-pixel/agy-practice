@@ -629,7 +629,7 @@ class Player {
 
     // --- COLISIÓN EN EJE Y ---
     this.y += this.vy;
-    this.handleVerticalCollision(level, input.down);
+    this.handleVerticalCollision(level, input.down, sfx, particles);
 
     // Comprobar Caída al Vacío o Ácido
     if (this.y > level.heightPixels + 50) {
@@ -734,7 +734,7 @@ class Player {
     }
   }
 
-  handleVerticalCollision(level, pressingDown) {
+  handleVerticalCollision(level, pressingDown, sfx, particles) {
     this.onGround = false;
     const leftTile = Math.floor(this.x / TILE_SIZE);
     const rightTile = Math.floor((this.x + this.width - 1) / TILE_SIZE);
@@ -766,7 +766,7 @@ class Player {
             }
           }
         } else if (tile === TILE.HAZARD) {
-          this.takeDamage(1, window.gameInstance?.sfx, window.gameInstance?.particles);
+          this.takeDamage(1, sfx, particles);
         }
       }
     }
@@ -1961,6 +1961,7 @@ class Game {
     }
 
     // Barra de Jefe si está presente
+    if (!this.level) return;
     const boss = this.level.monsters.find(m => m.type === 'boss');
     const bossHpBar = document.getElementById('boss-hp-fill');
     if (boss && bossHpBar) {
@@ -1984,6 +1985,9 @@ class Game {
 
     // 1. Fondo Cyberpunk Parallax
     this.renderBackground(camX);
+
+    // Solo dibuja el juego si el nivel ya fue cargado
+    if (!this.level) return;
 
     // 2. Mapa y Baldosas
     this.level.draw(this.ctx, camX, camY);

@@ -224,7 +224,7 @@ canvas#gameCanvas {
   transition: opacity 0.3s ease;
 }
 
-.overlay.hidden {
+.hidden {
   display: none !important;
 }
 
