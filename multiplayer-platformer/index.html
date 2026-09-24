@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cyber Duo: Monster Assault - Plataformas 2 Jugadores</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-wrapper">
+    <!-- HUD Superior con estado de ambos jugadores -->
+    <header class="game-hud">
+      <!-- Jugador 1 (Azul / WASD + ESPACIO) -->
+      <div class="hud-player p1-hud">
+        <div class="player-tag">
+          <span class="p1-name">P1: CYBER</span>
+          <span class="player-controls-hint">WASD + Espacio</span>
+        </div>
+        <div class="health-bar-container" title="Vida P1">
+          <div id="p1-hp-fill" class="health-bar-fill p1-hp" style="width: 100%;"></div>
+        </div>
+        <span id="p1-weapon-badge" class="weapon-badge">BLASTER</span>
+        <span id="p1-score" class="p1-score">0 pts</span>
+      </div>
+
+      <!-- Centro: Nivel / Oleada y Puntaje Global -->
+      <div class="hud-center">
+        <div id="stage-display" class="stage-badge">ZONA 1-1</div>
+        <div class="team-score">EQUIPO: <span id="team-score-val">000000</span></div>
+      </div>
+
+      <!-- Jugador 2 (Naranja / FLECHAS + 0 NUMPAD) -->
+      <div class="hud-player p2-hud">
+        <div class="player-tag">
+          <span class="p2-name">P2: VULCAN</span>
+          <span class="player-controls-hint">Flechas + 0 Num</span>
+        </div>
+        <div class="health-bar-container" title="Vida P2">
+          <div id="p2-hp-fill" class="health-bar-fill p2-hp" style="width: 100%;"></div>
+        </div>
+        <span id="p2-weapon-badge" class="weapon-badge">CANNON</span>
+        <span id="p2-score" class="p2-score">0 pts</span>
+      </div>
+
+      <!-- Botones de Acción / Navegación -->
+      <div class="hud-actions">
+        <button id="sound-btn" class="hud-btn" title="Activar/Desactivar Sonido">🔊</button>
+        <button id="pause-btn" class="hud-btn" title="Pausar Juego">⏸</button>
+        <a href="../platformer/index.html" class="hud-btn" title="Jugar Super Mario">🍄</a>
+        <a href="../index.html" class="hud-btn" title="Volver a Tetris">🕹️</a>
+      </div>
+    </header>
+
+    <!-- Contenedor del Canvas -->
+    <main class="canvas-wrapper">
+      <canvas id="gameCanvas" width="840" height="480"></canvas>
+
+      <!-- Barra de vida del Jefe (se activa dinámicamente) -->
+      <div id="boss-hud" class="boss-hud hidden">
+        <div id="boss-name" class="boss-title">⚠️ JEFE: CYBER-GORGON TITAN ⚠️</div>
+        <div class="health-bar-container" style="width: 100%; height: 10px;">
+          <div id="boss-hp-fill" class="boss-bar-fill" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Overlay Menú de Inicio -->
+      <div id="menu-overlay" class="overlay">
+        <div class="overlay-card">
+          <h1 class="game-title">CYBER DUO<br>MONSTER ASSAULT</h1>
+          <p class="game-subtitle">Plataformas Cooperativo 2 Jugadores • Dispara a los Monstruos</p>
+          
+          <div class="mode-selector">
+            <button id="mode-campaign-btn" class="mode-btn active" data-mode="campaign">Modo Misión (3 Zonas + Boss)</button>
+            <button id="mode-survival-btn" class="mode-btn" data-mode="survival">Modo Horda (Supervivencia)</button>
+          </div>
+
+          <!-- Cuadro de Controles -->
+          <div class="controls-summary">
+            <div class="ctrl-box p1-ctrl">
+              <h3>JUGADOR 1 (AZUL)</h3>
+              <div class="ctrl-row"><span>Moverse:</span> <div><kbd>A</kbd><kbd>D</kbd></div></div>
+              <div class="ctrl-row"><span>Saltar:</span> <div><kbd>W</kbd></div></div>
+              <div class="ctrl-row"><span>Agacharse/Bajar:</span> <div><kbd>S</kbd></div></div>
+              <div class="ctrl-row"><span>DISPARAR:</span> <div><kbd>ESPACIO</kbd></div></div>
+            </div>
+
+            <div class="ctrl-box p2-ctrl">
+              <h3>JUGADOR 2 (NARANJA)</h3>
+              <div class="ctrl-row"><span>Moverse:</span> <div><kbd>◀</kbd><kbd>▶</kbd></div></div>
+              <div class="ctrl-row"><span>Saltar:</span> <div><kbd>▲</kbd></div></div>
+              <div class="ctrl-row"><span>Agacharse/Bajar:</span> <div><kbd>▼</kbd></div></div>
+              <div class="ctrl-row"><span>DISPARAR:</span> <div><kbd>0 Num</kbd> / <kbd>0</kbd></div></div>
+            </div>
+          </div>
+
+          <button id="start-game-btn" class="btn-primary">¡INICIAR MISIÓN COOPERATIVA!</button>
+        </div>
+      </div>
+
+      <!-- Overlay de Pausa -->
+      <div id="pause-overlay" class="overlay hidden">
+        <div class="overlay-card" style="max-width: 400px;">
+          <h2 class="game-title">JUEGO EN PAUSA</h2>
+          <p class="game-subtitle">Presiona P o el botón para reanudar</p>
+          <button id="resume-btn" class="btn-primary">CONTINUAR</button>
+          <button id="restart-pause-btn" class="hud-btn" style="padding: 10px; margin-top: 6px;">Reiniciar Partida</button>
+        </div>
+      </div>
+
+      <!-- Overlay de Game Over -->
+      <div id="gameover-overlay" class="overlay hidden">
+        <div class="overlay-card">
+          <h2 class="game-title" style="color: #ff3366;">¡MISIÓN FALLIDA!</h2>
+          <p class="game-subtitle">Los monstruos han invadido la estación</p>
+          <div class="controls-summary" style="margin: 10px 0;">
+            <div class="ctrl-box p1-ctrl">
+              <h3>P1: CYBER</h3>
+              <p>Bajas: <span id="go-p1-kills">0</span></p>
+              <p>Puntos: <span id="go-p1-score">0</span></p>
+            </div>
+            <div class="ctrl-box p2-ctrl">
+              <h3>P2: VULCAN</h3>
+              <p>Bajas: <span id="go-p2-kills">0</span></p>
+              <p>Puntos: <span id="go-p2-score">0</span></p>
+            </div>
+          </div>
+          <p style="font-size: 0.75rem; color: #ffd700;">Puntaje de Equipo: <span id="go-team-score">0</span></p>
+          <button id="retry-btn" class="btn-primary">INTENTAR DE NUEVO</button>
+        </div>
+      </div>
+
+      <!-- Overlay de Victoria -->
+      <div id="victory-overlay" class="overlay hidden">
+        <div class="overlay-card">
+          <h2 class="game-title" style="color: #00ffcc;">¡MISIÓN CUMPLIDA!</h2>
+          <p class="game-subtitle">¡El Cyber-Gorgon Titan ha sido destruido!</p>
+          <div class="controls-summary" style="margin: 10px 0;">
+            <div class="ctrl-box p1-ctrl">
+              <h3>P1: CYBER</h3>
+              <p>Bajas: <span id="vic-p1-kills">0</span></p>
+              <p>Puntos: <span id="vic-p1-score">0</span></p>
+            </div>
+            <div class="ctrl-box p2-ctrl">
+              <h3>P2: VULCAN</h3>
+              <p>Bajas: <span id="vic-p2-kills">0</span></p>
+              <p>Puntos: <span id="vic-p2-score">0</span></p>
+            </div>
+          </div>
+          <p style="font-size: 0.8rem; color: #ffd700;">Puntaje Final: <span id="vic-team-score">0</span></p>
+          <button id="vic-replay-btn" class="btn-primary">JUGAR DE NUEVO</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Guía de controles al pie para ambos jugadores -->
+    <footer class="quick-controls-footer">
+      <div class="player-footer-guide footer-p1">
+        <span class="guide-title">JUGADOR 1 (CYBER AZUL)</span>
+        <div class="guide-keys">
+          <span><kbd>A</kbd><kbd>D</kbd> Moverse</span>
+          <span><kbd>W</kbd> Saltar / Mirar Arriba</span>
+          <span><kbd>S</kbd> Agacharse / Caer</span>
+          <span><kbd>Espacio</kbd> <strong>Disparar</strong></span>
+        </div>
+      </div>
+
+      <div class="player-footer-guide footer-p2">
+        <span class="guide-title">JUGADOR 2 (VULCAN NARANJA)</span>
+        <div class="guide-keys">
+          <span><kbd>◀</kbd><kbd>▶</kbd> Moverse</span>
+          <span><kbd>▲</kbd> Saltar / Mirar Arriba</span>
+          <span><kbd>▼</kbd> Agacharse / Caer</span>
+          <span><kbd>0 Num</kbd> / <kbd>0</kbd> <strong>Disparar</strong></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
